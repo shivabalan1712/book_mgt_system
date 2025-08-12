@@ -1,4 +1,7 @@
 package com.bgmsys.bookmanagementsys.Repository;
 
-public interface EntryInfoRepository {
+import com.bgmsys.bookmanagementsys.Model.EntryInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EntryInfoRepository extends JpaRepository<EntryInfo, Long> {
 }

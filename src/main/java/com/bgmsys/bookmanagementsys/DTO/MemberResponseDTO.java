@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookRequestDTO {
+public class MemberResponseDTO {
 
-    private String bookName;
-    private String author;
-    private int totalCopies;
-    private int availableCopies;
+    private long memberId;
+    private String username;
+    private String password;
+    private String email;
 }

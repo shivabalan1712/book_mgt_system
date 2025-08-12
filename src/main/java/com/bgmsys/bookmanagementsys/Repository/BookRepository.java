@@ -1,4 +1,7 @@
 package com.bgmsys.bookmanagementsys.Repository;
 
-public interface BookRepository {
+import com.bgmsys.bookmanagementsys.Model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository<Book, Long> {
 }
