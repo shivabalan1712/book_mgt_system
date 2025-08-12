@@ -12,8 +12,8 @@ public class BookMapperDTO {
 
     public static Book toEntity(BookRequestDTO bookRequestDTO) {
         Book book = new Book();
-        book.setBookName(bookRequestDTO.getBookName());
-        book.setBookAuthor(bookRequestDTO.getAuthor());
+        book.setName(bookRequestDTO.getName());
+        book.setAuthor(bookRequestDTO.getAuthor());
         book.setTotalcopies(bookRequestDTO.getTotalCopies());
         book.setAvailablecopies(bookRequestDTO.getAvailableCopies());
         return book;
@@ -22,9 +22,9 @@ public class BookMapperDTO {
 
     public static BookResponseDTO toDTO(Book book) {
         return new BookResponseDTO(
-                book.getBookid(),
-                book.getBookName(),
-                book.getBookAuthor(),
+                book.getBookId(),
+                book.getName(),
+                book.getAuthor(),
                 book.getTotalcopies(),
                 book.getAvailablecopies()
         );

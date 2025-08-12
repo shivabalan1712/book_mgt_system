@@ -21,10 +21,16 @@ public class BookControler {
         return bookService.addMember(memberRequestDTO);
     }
 
+//    @GetMapping("/book")
+//    public BookResponseDTO getAllBook() { return bookService.getAllBook();}
+
     @GetMapping("/book/{id}")
     public BookResponseDTO book(@PathVariable Integer id) {
         return bookService.getBookById(id);
     }
+
+    @PutMapping("/book/{id}")
+    public BookResponseDTO updateBook(@PathVariable Integer id, @RequestBody BookRequestDTO bookRequestDTO) {return bookService.updateBook(id);}
 
     @GetMapping("/member/{id}")
     public MemberResponseDTO member(@PathVariable Integer id) {
@@ -36,9 +42,9 @@ public class BookControler {
         return bookService.borrowBook(bookId, memberId);
     }
 
-//    @PostMapping("/return/{bookId}/{memberId}")
-//    public BwRnResponseDTO returnBook(@PathVariable long bookId, @PathVariable long memberId) {
-//        return bookService.returnBook(bookId, memberId);
-//    }
+    @PostMapping("/return/{bookId}/{memberId}")
+    public BwRnResponseDTO returnBook(@PathVariable long bookId, @PathVariable long memberId) {
+        return bookService.returnBook(bookId, memberId);
+    }
 }
 

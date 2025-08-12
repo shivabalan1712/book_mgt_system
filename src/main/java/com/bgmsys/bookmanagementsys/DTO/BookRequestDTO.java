@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class BookRequestDTO {
 
-    private String bookName;
+    private String name;
     private String author;
     private int totalCopies;
     private int availableCopies;

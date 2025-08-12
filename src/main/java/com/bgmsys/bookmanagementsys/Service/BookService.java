@@ -48,9 +48,9 @@ public class BookService {
     public BookResponseDTO getBookById(long bookId) {
         Book book = bookRepository.findById(bookId).orElse(null);
         return new BookResponseDTO(
-                Objects.requireNonNull(book).getBookid(),
-                book.getBookName(),
-                book.getBookAuthor(),
+                Objects.requireNonNull(book).getBookId(),
+                book.getName(),
+                book.getAuthor(),
                 book.getTotalcopies(),
                 book.getAvailablecopies()
         );
@@ -84,21 +84,31 @@ public class BookService {
 
     }
 
-//    public BwRnResponseDTO returnBook(long bookId, long memberId) {
-//        Book book = bookRepository.findById(bookId)
-//                .orElseThrow(() -> new RuntimeException("Book not found"));
-//
-//        Member member = memberRepository.findById(memberId).orElse(null);
-//        EntryInfo existingEntryInfo = entryInfoRepository
-//                .finfindByBook_BookIdAndMember_MemberIdAndReturnDateIsNull(bookId, memberId)
-//                .orElseThrow(() -> new RuntimeException("No active borrow record found"));
-//        existingEntryInfo.setReturndate(LocalDate.now());
-//        if(book.getAvailablecopies()<book.getTotalcopies()){
-//            book.setAvailablecopies(book.getAvailablecopies()+1);
-//            bookRepository.save(book);
-//        }
-//        EntryInfo savedInfo=entryInfoRepository.save(existingEntryInfo);
-//        return brRnMapperDTO.toDTO(savedInfo);
-//    }
+    public BwRnResponseDTO returnBook(long bookId, long memberId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
 
+        Member member = memberRepository.findById(memberId).orElse(null);
+        EntryInfo existingEntryInfo = entryInfoRepository
+                .findByBook_BookIdAndMember_MemberIdAndReturndateIsNull(bookId, memberId)
+                .orElseThrow(() -> new RuntimeException("No active borrow record found"));
+        existingEntryInfo.setReturndate(LocalDate.now());
+        if(book.getAvailablecopies()<book.getTotalcopies()){
+            book.setAvailablecopies(book.getAvailablecopies()+1);
+            bookRepository.save(book);
+        }
+        EntryInfo savedInfo=entryInfoRepository.save(existingEntryInfo);
+        return brRnMapperDTO.toDTO(savedInfo);
+    }
+
+    public BookResponseDTO getAllBook() {
+        return (BookResponseDTO) bookRepository.findAll();
+    }
+
+    public BookResponseDTO updateBook(long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        bookRepository.save(book);
+        return BookMapperDTO.toDTO(book);
+    }
 }

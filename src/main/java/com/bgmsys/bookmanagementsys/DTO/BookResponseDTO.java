@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookResponseDTO {
-    private long bookId;
-    private String bookName;
+    private long bookid;
+    private String name;
     private String author;
     private int totalCopies;
     private int availableCopies;
