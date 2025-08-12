@@ -5,24 +5,21 @@ import com.bgmsys.bookmanagementsys.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class BookControler {
     @Autowired
     BookService bookService;
     @Autowired
-    private BwRnResponseDTO bwRnResponceDTO;
+    private BwRnResponseDTO bwRnResponseDTO;
     @PostMapping("/book")
     public BookResponseDTO book(@RequestBody BookRequestDTO bookRequestDTO) {
         return bookService.addBook(bookRequestDTO);
     }
 
-    @PostMapping("/member")
-    public MemberResponseDTO member(@RequestBody MemberRequestDTO memberRequestDTO) {
-        return bookService.addMember(memberRequestDTO);
-    }
-
-//    @GetMapping("/book")
-//    public BookResponseDTO getAllBook() { return bookService.getAllBook();}
+    @GetMapping("/books")
+    public List<BookResponseDTO> getAllBook() { return bookService.getAllBooks();}
 
     @GetMapping("/book/{id}")
     public BookResponseDTO book(@PathVariable Integer id) {
@@ -32,10 +29,19 @@ public class BookControler {
     @PutMapping("/book/{id}")
     public BookResponseDTO updateBook(@PathVariable Integer id, @RequestBody BookRequestDTO bookRequestDTO) {return bookService.updateBook(id);}
 
+    @PostMapping("/member")
+    public MemberResponseDTO member(@RequestBody MemberRequestDTO memberRequestDTO) {return bookService.addMember(memberRequestDTO);}
+
+    @GetMapping("/members")
+    public List<MemberResponseDTO> allMembers(){ return bookService.getAllMembers();}
+
     @GetMapping("/member/{id}")
-    public MemberResponseDTO member(@PathVariable Integer id) {
+    public MemberResponseDTO member(@PathVariable Long id) {
         return bookService.getMemberById(id);
     }
+
+    @PutMapping("/member/{id}}")
+    public MemberResponseDTO updateMember(@PathVariable Long id, @RequestBody MemberRequestDTO memberRequestDTO) {return bookService.updateMember(id);}
 
     @PostMapping("/borrow/{bookId}/{memberId}")
     public BwRnResponseDTO borrowBook(@PathVariable long bookId, @PathVariable long memberId) {

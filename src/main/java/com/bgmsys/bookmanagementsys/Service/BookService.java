@@ -1,21 +1,14 @@
 package com.bgmsys.bookmanagementsys.Service;
 
 import com.bgmsys.bookmanagementsys.DTO.*;
-import com.bgmsys.bookmanagementsys.DTO.BwRnResponseDTO;
-import com.bgmsys.bookmanagementsys.Mapper.BookMapperDTO;
-import com.bgmsys.bookmanagementsys.Mapper.BrRnMapperDTO;
-import com.bgmsys.bookmanagementsys.Mapper.MemberMapperDTO;
-import com.bgmsys.bookmanagementsys.Model.Book;
-import com.bgmsys.bookmanagementsys.Model.EntryInfo;
-import com.bgmsys.bookmanagementsys.Model.Member;
-import com.bgmsys.bookmanagementsys.Repository.BookRepository;
-import com.bgmsys.bookmanagementsys.Repository.EntryInfoRepository;
-import com.bgmsys.bookmanagementsys.Repository.MemberRepository;
+import com.bgmsys.bookmanagementsys.Mapper.*;
+import com.bgmsys.bookmanagementsys.Model.*;
+import com.bgmsys.bookmanagementsys.Repository.*;
+import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.Objects;
+import java.time.*;
+import java.util.*;
 
 @Service
 public class BookService {
@@ -32,6 +25,8 @@ public class BookService {
     private BookMapperDTO bookMapperDTO;
     @Autowired
     private BrRnMapperDTO brRnMapperDTO;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public BookResponseDTO addBook(BookRequestDTO bookRequestDTO) {
         Book book= BookMapperDTO.toEntity(bookRequestDTO);
@@ -101,8 +96,11 @@ public class BookService {
         return brRnMapperDTO.toDTO(savedInfo);
     }
 
-    public BookResponseDTO getAllBook() {
-        return (BookResponseDTO) bookRepository.findAll();
+    public List<BookResponseDTO> getAllBooks() {
+        return bookRepository.findAll()
+                .stream()
+                .map(book -> modelMapper.map(book, BookResponseDTO.class))
+                .toList();
     }
 
     public BookResponseDTO updateBook(long bookId) {
@@ -110,5 +108,19 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         bookRepository.save(book);
         return BookMapperDTO.toDTO(book);
+    }
+
+    public List<MemberResponseDTO> getAllMembers() {
+        return memberRepository.findAll()
+                .stream()
+                .map(member ->modelMapper.map(member,MemberResponseDTO.class))
+                .toList();
+    }
+
+    public MemberResponseDTO updateMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("No member with this id found"));
+        memberRepository.save(member);
+        return MemberMapperDTO.toDTO(member);
     }
 }

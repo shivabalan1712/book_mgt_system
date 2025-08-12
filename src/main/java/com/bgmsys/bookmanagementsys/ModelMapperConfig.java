@@ -1,10 +1,13 @@
-//package com.bgmsys.bookmanagementsys;
-//
-//import org.springframework.context.annotation.Bean;
-//
-//public class ModelMapperConfig {
-//    @Bean
-//    public ModelMaper modelMaper(){
-//        return new ModelMapper();
-//    }
-//}
+package com.bgmsys.bookmanagementsys;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ModelMapperConfig {
+    @Bean
+    public ModelMapper modelMaper(){
+        return new ModelMapper();
+    }
+}
