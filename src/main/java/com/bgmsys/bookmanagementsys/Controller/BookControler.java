@@ -40,7 +40,7 @@ public class BookControler {
         return bookService.getMemberById(id);
     }
 
-    @PutMapping("/member/{id}}")
+    @PutMapping("/member/{id}")
     public MemberResponseDTO updateMember(@PathVariable Long id, @RequestBody MemberRequestDTO memberRequestDTO) {return bookService.updateMember(id);}
 
     @PostMapping("/borrow/{bookId}/{memberId}")
