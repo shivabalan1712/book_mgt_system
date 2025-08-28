@@ -5,7 +5,6 @@ import com.bgmsys.bookmanagementsys.DTO.BookResponseDTO;
 import com.bgmsys.bookmanagementsys.Model.Book;
 import lombok.Data;
 import org.springframework.stereotype.Component;
-
 @Component
 @Data
 public class BookMapperDTO {

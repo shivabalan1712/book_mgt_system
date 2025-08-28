@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: book_mgt_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bookdb
+      SPRING_DATASOURCE_USERNAME: bookuser
+      SPRING_DATASOURCE_PASSWORD: bookpass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - booknet
+
+  db:
+    image: postgres:15
+    container_name: book_mgt_db
+    environment:
+      POSTGRES_DB: bookdb
+      POSTGRES_USER: bookuser
+      POSTGRES_PASSWORD: bookpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - booknet
+
+volumes:
+  postgres_data:
+
+networks:
+  booknet:
+    driver: bridge
