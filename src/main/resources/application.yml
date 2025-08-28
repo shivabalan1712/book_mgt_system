@@ -1,10 +1,12 @@
 spring:
   application:
-    name: ${SPRING_APPLICATION_NAME}
+    name: pro
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/demopost?currentSchema=public
+    username: shiv
+    password: 1234
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      ddl-auto: update
+server:
+  port: 8081
