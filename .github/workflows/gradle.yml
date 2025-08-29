@@ -6,13 +6,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
-build:
+jobs:
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
 
-    # Expose Spring Boot config to the Gradle test JVM via env vars (recommended)
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/bookdb
       SPRING_DATASOURCE_USERNAME: test
@@ -54,31 +54,28 @@ build:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Make Gradle wrapper executable
+      - name: Make Gradle wrapper executable (Linux/macOS only)
+        if: runner.os != 'Windows'
         run: chmod +x ./gradlew
 
-      - name: Wait for Postgres to be ready
+      - name: Wait for Postgres
         run: |
-          echo "Waiting for Postgres to be ready..."
+          echo "Waiting for Postgres..."
           for i in {1..30}; do
             if pg_isready -h localhost -p 5432 -U test > /dev/null 2>&1; then
               echo "Postgres is ready"
               break
             fi
-            # fallback: check port open (runner usually has /dev/tcp)
-            if (echo > /dev/tcp/localhost/5432) >/dev/null 2>&1; then
-              echo "Postgres port open (pg_isready not available)."
-              break
-            fi
             sleep 2
           done
+        shell: bash
         env:
           PGPASSWORD: test
 
-      - name: Build and run tests (Gradle)
+      - name: Build and run tests
         run: ./gradlew clean build --no-daemon --info
+        shell: bash
         env:
-          # re-affirm important env to Gradle JVM (optional, they inherit job env)
           SPRING_DATASOURCE_URL: ${{ env.SPRING_DATASOURCE_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ env.SPRING_DATASOURCE_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ env.SPRING_DATASOURCE_PASSWORD }}
