@@ -2,11 +2,13 @@ spring:
   application:
     name: pro
   datasource:
-    url: jdbc:postgresql://localhost:5432/demopost?currentSchema=public
-    username: shiv
-    password: 1234
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
 server:
   port: 8081
